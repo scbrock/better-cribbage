@@ -79,6 +79,9 @@ class Hand:
         # Check for duplicates
         if len(set(self.cards)) != 6:
             raise ValueError("Hand cannot contain duplicate cards")
+        
+        # Sort cards by rank and suit for consistent display
+        self.cards = sorted(self.cards, key=lambda c: (c.rank.value, c.suit.value))
 
 
 @dataclass

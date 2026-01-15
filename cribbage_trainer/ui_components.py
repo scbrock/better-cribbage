@@ -204,6 +204,9 @@ class HandGenerator:
         # Randomly select 6 cards
         selected_cards = random.sample(full_deck, 6)
         
+        # Sort cards by rank and suit for consistent display
+        selected_cards = sorted(selected_cards, key=lambda c: (c.rank.value, c.suit.value))
+        
         # Randomly determine dealer status if not specified
         if is_dealer is None:
             is_dealer = random.choice([True, False])
