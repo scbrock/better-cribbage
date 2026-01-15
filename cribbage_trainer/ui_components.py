@@ -44,25 +44,26 @@ class CardDisplay:
         suit_symbol = CardDisplay.SUIT_SYMBOLS[card.suit]
         suit_color = CardDisplay.SUIT_COLORS[card.suit]
         
-        # Create card styling
+        # Create card styling - compact for mobile
         border_color = "#007bff" if selected else "#dee2e6"
         background_color = "#e3f2fd" if selected else "white"
         
         card_html = f"""
         <div style="
             border: 2px solid {border_color};
-            border-radius: 8px;
-            padding: 10px;
-            margin: 5px;
+            border-radius: 6px;
+            padding: 6px 4px;
+            margin: 2px;
             background-color: {background_color};
             text-align: center;
-            min-width: 60px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-width: 45px;
+            max-width: 55px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         ">
-            <div style="font-size: 18px; font-weight: bold; color: {suit_color};">
+            <div style="font-size: 14px; font-weight: bold; color: {suit_color}; line-height: 1.2;">
                 {card.rank.value}
             </div>
-            <div style="font-size: 24px;">
+            <div style="font-size: 18px; line-height: 1;">
                 {suit_symbol}
             </div>
         </div>
@@ -81,6 +82,31 @@ class CardDisplay:
         Returns:
             List of selected cards
         """
+        # Add custom CSS for compact mobile layout
+        st.markdown("""
+        <style>
+        /* Make checkboxes more compact */
+        .stCheckbox {
+            margin-top: -10px;
+            margin-bottom: -10px;
+        }
+        .stCheckbox label {
+            font-size: 12px;
+        }
+        /* Reduce column gaps */
+        [data-testid="column"] {
+            padding: 0px 2px;
+        }
+        /* Make buttons more compact on mobile */
+        @media (max-width: 768px) {
+            .stButton button {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         st.subheader("Your Hand")
         
         # Display dealer status
@@ -111,8 +137,8 @@ class CardDisplay:
                 # Display the card
                 st.markdown(CardDisplay.display_card(card, is_selected), unsafe_allow_html=True)
                 
-                # Add selection checkbox
-                if st.checkbox(f"Select", key=card_key, value=is_selected):
+                # Add selection checkbox with compact label
+                if st.checkbox("✓", key=card_key, value=is_selected, label_visibility="visible"):
                     new_selected_cards.append(card)
         
         # Update selected cards in session state

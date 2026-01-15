@@ -16,7 +16,8 @@ def main():
     st.set_page_config(
         page_title="Cribbage Trainer",
         page_icon="🃏",
-        layout="wide"
+        layout="centered",  # Changed from "wide" to "centered" for better mobile experience
+        initial_sidebar_state="auto"
     )
     
     # Initialize session state
