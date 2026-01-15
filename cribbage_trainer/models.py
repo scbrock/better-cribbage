@@ -46,6 +46,26 @@ class Rank(Enum):
     def cribbage_value(self) -> int:
         """Get the cribbage value (for fifteens and runs)."""
         return self.numeric_value
+    
+    @property
+    def sort_order(self) -> int:
+        """Get the sort order for displaying cards (A=1, 2=2, ..., 10=10, J=11, Q=12, K=13)."""
+        rank_order = {
+            Rank.ACE: 1,
+            Rank.TWO: 2,
+            Rank.THREE: 3,
+            Rank.FOUR: 4,
+            Rank.FIVE: 5,
+            Rank.SIX: 6,
+            Rank.SEVEN: 7,
+            Rank.EIGHT: 8,
+            Rank.NINE: 9,
+            Rank.TEN: 10,
+            Rank.JACK: 11,
+            Rank.QUEEN: 12,
+            Rank.KING: 13
+        }
+        return rank_order[self]
 
 
 @dataclass
@@ -80,8 +100,8 @@ class Hand:
         if len(set(self.cards)) != 6:
             raise ValueError("Hand cannot contain duplicate cards")
         
-        # Sort cards by rank and suit for consistent display
-        self.cards = sorted(self.cards, key=lambda c: (c.rank.value, c.suit.value))
+        # Sort cards by sort order and suit for consistent display
+        self.cards = sorted(self.cards, key=lambda c: (c.rank.sort_order, c.suit.value))
 
 
 @dataclass

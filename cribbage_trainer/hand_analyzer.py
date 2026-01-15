@@ -207,7 +207,7 @@ class HandAnalyzer:
         st.subheader("Current Hand")
         
         # Sort cards for display
-        sorted_cards = sorted(st.session_state.custom_hand_cards, key=lambda c: (c.rank.value, c.suit.value))
+        sorted_cards = sorted(st.session_state.custom_hand_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         # Display cards
         if len(sorted_cards) <= 6:
@@ -281,7 +281,7 @@ class HandAnalyzer:
                     st.markdown(f"**As {current_status}:**")
                     
                     optimal = optimal_discards[0]
-                    sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value))
+                    sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value))
                     cards_str = ", ".join(str(card) for card in sorted_discard)
                     
                     st.success(f"Discard: {cards_str}")
@@ -292,7 +292,7 @@ class HandAnalyzer:
                     st.markdown(f"**As {opposite_status}:**")
                     
                     opp_optimal = opposite_optimal[0]
-                    opp_sorted_discard = sorted(opp_optimal.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value))
+                    opp_sorted_discard = sorted(opp_optimal.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value))
                     opp_cards_str = ", ".join(str(card) for card in opp_sorted_discard)
                     
                     if opp_cards_str == cards_str:
@@ -323,7 +323,7 @@ class HandAnalyzer:
         if len(optimal_discards) == 1:
             st.success(f"🎯 **Optimal discard as {dealer_text}:**")
             optimal = optimal_discards[0]
-            sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value))
+            sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value))
             cards_str = ", ".join(str(card) for card in sorted_discard)
             
             col1, col2 = st.columns(2)
@@ -338,7 +338,7 @@ class HandAnalyzer:
             st.success(f"🎯 **{len(optimal_discards)} equally optimal discards as {dealer_text}:**")
             
             for i, optimal in enumerate(optimal_discards):
-                sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value))
+                sorted_discard = sorted(optimal.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value))
                 cards_str = ", ".join(str(card) for card in sorted_discard)
                 
                 with st.expander(f"Option {i+1}: {cards_str} (Expected: {optimal.expected_score:.1f})"):
@@ -347,7 +347,7 @@ class HandAnalyzer:
         # Show remaining hand for the first option
         st.subheader("Remaining Hand")
         remaining_cards = [card for card in hand.cards if card not in optimal_discards[0].cards_to_discard]
-        remaining_cards = sorted(remaining_cards, key=lambda c: (c.rank.value, c.suit.value))
+        remaining_cards = sorted(remaining_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         cols = st.columns(len(remaining_cards))
         for i, card in enumerate(remaining_cards):
@@ -363,7 +363,7 @@ class HandAnalyzer:
         # Create table
         data = []
         for i, option in enumerate(sorted_options):
-            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.value, c.suit.value))
+            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.sort_order, c.suit.value))
             discard_str = ", ".join(str(card) for card in sorted_discard)
             
             data.append({
@@ -380,7 +380,7 @@ class HandAnalyzer:
         top_3 = sorted_options[:3]
         st.subheader("Top 3 Choices")
         for i, option in enumerate(top_3):
-            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.value, c.suit.value))
+            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.sort_order, c.suit.value))
             cards_str = ", ".join(str(card) for card in sorted_discard)
             
             if i == 0:
@@ -397,7 +397,7 @@ class HandAnalyzer:
         
         # Show what cards are kept
         kept_cards = [card for card in hand.cards if card not in optimal.cards_to_discard]
-        kept_cards = sorted(kept_cards, key=lambda c: (c.rank.value, c.suit.value))
+        kept_cards = sorted(kept_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         st.markdown("**Cards you keep:**")
         cols = st.columns(len(kept_cards))

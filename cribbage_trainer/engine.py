@@ -59,7 +59,7 @@ class CribbageEngine:
             reasoning = self._generate_reasoning(option, all_options, hand.is_dealer, len(optimal_options) > 1, i)
             
             optimal_discards.append(OptimalDiscard(
-                cards_to_discard=sorted(option.discard, key=lambda c: (c.rank.value, c.suit.value)),
+                cards_to_discard=sorted(option.discard, key=lambda c: (c.rank.sort_order, c.suit.value)),
                 expected_score=option.total_expected_value,
                 reasoning=reasoning
             ))

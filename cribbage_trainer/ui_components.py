@@ -91,7 +91,7 @@ class CardDisplay:
         st.markdown("**Instructions:** Select exactly 2 cards to discard to the crib.")
         
         # Sort cards for consistent display
-        sorted_cards = sorted(hand.cards, key=lambda c: (c.rank.value, c.suit.value))
+        sorted_cards = sorted(hand.cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         # Create columns for card layout
         cols = st.columns(6)
@@ -126,7 +126,7 @@ class CardDisplay:
         elif len(new_selected_cards) == 2:
             st.success("✅ 2 cards selected. Ready to submit!")
             # Sort selected cards for display
-            sorted_selected = sorted(new_selected_cards, key=lambda c: (c.rank.value, c.suit.value))
+            sorted_selected = sorted(new_selected_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
             st.markdown(f"**Selected cards:** {', '.join(str(card) for card in sorted_selected)}")
         else:
             st.error(f"❌ Too many cards selected ({len(new_selected_cards)}). Please select exactly 2 cards.")
@@ -166,7 +166,7 @@ class CardDisplay:
         remaining_cards = [card for card in hand.cards if card not in discarded_cards]
         
         # Sort remaining cards
-        remaining_cards = sorted(remaining_cards, key=lambda c: (c.rank.value, c.suit.value))
+        remaining_cards = sorted(remaining_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         st.subheader("Your Remaining Hand")
         
@@ -205,7 +205,7 @@ class HandGenerator:
         selected_cards = random.sample(full_deck, 6)
         
         # Sort cards by rank and suit for consistent display
-        selected_cards = sorted(selected_cards, key=lambda c: (c.rank.value, c.suit.value))
+        selected_cards = sorted(selected_cards, key=lambda c: (c.rank.sort_order, c.suit.value))
         
         # Randomly determine dealer status if not specified
         if is_dealer is None:

@@ -94,10 +94,10 @@ class FeedbackDisplay:
             if len(all_optimal_discards) > 1:
                 st.markdown(f"**{len(all_optimal_discards)} equally optimal discards:**")
                 for i, opt_discard in enumerate(all_optimal_discards):
-                    cards_str = ", ".join(str(card) for card in sorted(opt_discard.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value)))
+                    cards_str = ", ".join(str(card) for card in sorted(opt_discard.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value)))
                     st.markdown(f"• {cards_str}")
             else:
-                optimal_cards_str = ", ".join(str(card) for card in sorted(optimal_discard.cards_to_discard, key=lambda c: (c.rank.value, c.suit.value)))
+                optimal_cards_str = ", ".join(str(card) for card in sorted(optimal_discard.cards_to_discard, key=lambda c: (c.rank.sort_order, c.suit.value)))
                 st.markdown(f"**Discarded:** {optimal_cards_str}")
             
             st.metric("Expected Score", f"{optimal_discard.expected_score:.1f}")
@@ -349,7 +349,7 @@ class FeedbackDisplay:
         data = []
         for i, option in enumerate(sorted_options):
             # Sort discard cards for display
-            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.value, c.suit.value))
+            sorted_discard = sorted(option.discard, key=lambda c: (c.rank.sort_order, c.suit.value))
             discard_str = ", ".join(str(card) for card in sorted_discard)
             data.append({
                 "Rank": i + 1,
